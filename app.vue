@@ -1,7 +1,7 @@
 <template>
     <client-only>
         <div class="map-wrapper">
-            <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]" :use-global-leaflet="false">
+            <l-map ref="map" :center="[47.41322, -1.219482]" :use-global-leaflet="false" @ready="init">
                 <l-tile-layer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     layer-type="base"
@@ -12,28 +12,18 @@
     </client-only>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import "leaflet/dist/leaflet.css";
 import type L from "leaflet";
 
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 
-export default {
-    components: {
-        LMap,
-        LTileLayer,
-    },
-    data() {
-        return {
-            zoom: 10,
-        };
-    },
-    mounted() {
-        this.$nextTick(() => {
-            console.log(this.$refs);
-            (this.$refs.map as any).leafletObject.fitBounds([]);
-        });
-    },
+const map = ref<any>();
+
+const init = () => {
+  if (map) {
+    map.value.leafletObject.fitBounds([[47.41322, -1.219482], [47.51322, -1.319482]]);
+  }
 };
 </script>
 
